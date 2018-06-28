@@ -1,0 +1,12 @@
+{
+    "name": "pi/tiny-framework",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "maohhgg",
+            "email": "maohhgg@gmail.com"
+        }
+    ],
+    "require": {}
+}
