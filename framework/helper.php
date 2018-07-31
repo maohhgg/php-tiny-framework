@@ -104,17 +104,3 @@ function array_cursive($array, $value)
     return [array_shift($array) => array_cursive($array, $value)];
 }
 
-if (!function_exists('view')) {
-
-    /**
-     * @param null $view
-     * @param array $data
-     * @param array $mergeData
-     * @return App|mixed
-     * @throws \Framework\Exceptions\CoreHttpException
-     */
-    function view($view = null, $data = [], $mergeData = [])
-    {
-        return app('view')->make($view, $data, $mergeData);
-    }
-}

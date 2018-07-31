@@ -20,7 +20,7 @@ class Index extends Controller
      */
     public function hello()
     {
-        print_r(config());
+        return sprintf('Action is "%s",  Route Strategy is "%s"',get_class(),config('route.route_strategy'));
     }
 
     /**
@@ -63,6 +63,6 @@ class Index extends Controller
     }
 
     public function view(){
-
+        return $this->fetch('index/view',['body' => 'Test body information', 'users' => [1, 2]]);
     }
 }

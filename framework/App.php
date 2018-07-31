@@ -32,6 +32,16 @@ class App
     public $rootPath;
 
     /**
+     * @var string
+     */
+    public $runtimePath;
+
+    /**
+     * @var string
+     */
+    public $resourcePath;
+
+    /**
      * 框架加载流程一系列处理类集合
      * @var array
      */
@@ -70,6 +80,9 @@ class App
         $this->runningMode = getenv('EASY_MODE');
         // 根目录
         $this->rootPath = $rootPath;
+        $this->runtimePath = $rootPath.'/runtime/';
+        $this->resourcePath = $rootPath.'/resources/';
+
 
         $loader();
         Load::register($this);
