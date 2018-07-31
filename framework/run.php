@@ -26,16 +26,17 @@ try {
      * 挂载各种 Handle
      */
     $app->load(function () {
-        // 加载预环境参数机制 Loading env handle
+        // 加载预环境参数机制
         return new EnvHandle();
     });
 
     $app->load(function () {
-        // 加载预定义配置机制 Loading config handle
+        // 加载预定义配置机制
         return new ConfigHandle();
     });
+
     $app->load(function (){
-        // 加载路由机制 Loading route handle
+        // 加载路由机制
         return new RouterHandle();
     });
 

@@ -59,7 +59,7 @@ class DB
     {
         $db = new self;
         $db->tableName = $tableName;
-        $prefix = App::$container->getSingle('config')->config['database']['dbprefix'];
+        $prefix = config('database.dbprefix');
         if (!empty($prefix)) {
             $db->tableName = $prefix . '_' . $db->tableName;
         }
@@ -80,9 +80,8 @@ class DB
      */
     public function init()
     {
-        $config = APP::$container->getSingle('config');
         foreach ($this->dbConfig as $k => $v){
-            $this->dbConfig[$k] = $config->config['database'][$k];
+            $this->dbConfig[$k] = config('database')[$k];
         }
         unset($k);
         unset($v);

@@ -17,6 +17,16 @@ class Response
      */
     public function response($response)
     {
+        header('Content-Type:text/html; Charset=utf-8');
+        die($response);
+    }
+
+    /**
+     * @param mixed $response
+     * @return string
+     */
+    public function responseJson($response)
+    {
         header('Content-Type:Application/json; Charset=utf-8');
         die(json_encode($response,JSON_UNESCAPED_UNICODE));
     }

@@ -17,11 +17,11 @@ class App
      * 框架实例
      * @var App
      */
-    private static $app;
+    public static $app;
 
     /**
      * 服务容器
-     * @var
+     * @var Container
      */
     public static $container;
 
@@ -115,6 +115,11 @@ class App
         if ($this->runningMode === 'cli') {
             $closure()->cliModeSuccess($this->responseData);
             return;
+        }
+        $type = config('default_response_type');
+        if ($type == 'json') {
+            $closure()->responseJson($this->responseData);
+            return ;
         }
         $closure()->response($this->responseData);
     }

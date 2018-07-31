@@ -236,6 +236,8 @@ class Request
         if ($rule === 'number') {
             if (is_numeric($this->request($paramName))) return;
             throw new CoreHttpException(404, "{$paramName} type is not number");
+        } else {
+            return empty($this->request($paramName));
         }
     }
 

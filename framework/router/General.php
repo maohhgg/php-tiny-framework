@@ -9,7 +9,7 @@
 namespace Framework\Router;
 
 
-class General implements RouterInterface
+class General implements routeStrategyInterface
 {
 
     /**
@@ -20,10 +20,19 @@ class General implements RouterInterface
     public function route(Router $entrance)
     {
         $app = $entrance->app;
-        $request = $app::$container->get('request');
-        $moduleName = $request->request('m');
-        $controllerName =  $request->request('c');
-        $actionName =  $request->request('a');
+        $request = request();
+
+        $moduleName = $request->check('m') ?
+            $request->request('m') :
+            ($request->check('module') ? $request->request('module') : null);
+
+        $controllerName =  $request->check('c') ?
+            $request->request('c') :
+            ($request->check('controller') ? $request->request('controller') : null);
+
+        $actionName =  $request->request('a') ?
+            $request->request('a') :
+            ($request->check('action') ? $request->request('action') : null);
 
         if (! empty($moduleName)) {
             $entrance->moduleName = $moduleName;

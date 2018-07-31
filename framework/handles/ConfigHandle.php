@@ -53,16 +53,18 @@ class ConfigHandle implements Handle
      */
     public function register(App $app)
     {
-        // load helper
-        require($app->rootPath.'/framework/helper.php');
-
 
         $this->app = $app;
         $app::$container->setSingle('config', $this);
+
+
+        // load helper
+        require($app->rootPath.'/framework/helper.php');
+
+        // load config file
         $this->loadConfig($app);
 
         // 设置时区
-        // define time zone
         date_default_timezone_set($this->config['default_timezone']);
     }
 
@@ -81,7 +83,7 @@ class ConfigHandle implements Handle
         $this->config = array_merge($defaultCommon, $defaultDatabase);
 
         /* 加载模块自定义配置 */
-        $module = $app::$container->getSingle('config')->config['module'];
+        $module = config('module');
         foreach ($module as $v) {
             $file = $app->rootPath . "/config/{$v}/config.php";
             if (file_exists($file)) {

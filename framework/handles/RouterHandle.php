@@ -16,6 +16,7 @@ class RouterHandle implements Handle
     /**
      * 注册处理机制
      * @param App $app
+     * @throws \Framework\Exceptions\CoreHttpException
      */
     public function register(App $app)
     {

@@ -11,7 +11,6 @@ namespace Framework\Router;
 
 use Framework\App;
 use Framework\Exceptions\CoreHttpException;
-use Framework\handles\ConfigHandle;
 use framework\Request;
 
 /**
@@ -20,41 +19,12 @@ use framework\Request;
  */
 class TinyRouter extends Router
 {
-    /**
-     * 框架实例
-     * @var App
-     */
-    public $app;
-
-    /**
-     * 配置实例
-     * @var ConfigHandle
-     */
-    private $config;
 
     /**
      * 请求对象实例
      * @var Request
      */
     private $request;
-
-    /**
-     * 默认模块
-     * @var string
-     */
-    public $moduleName;
-
-    /**
-     * 默认控制器
-     * @var string
-     */
-    public $controllerName;
-
-    /**
-     * 默认操作
-     * @var string
-     */
-    public $actionName;
 
     /**
      * 类文件路径.
@@ -72,7 +42,8 @@ class TinyRouter extends Router
      * 请求uri.
      * @var string
      */
-    private $requestUri = '';
+    public $requestUri = '';
+
     /**
      * 路由策略.
      * @var string
@@ -99,29 +70,28 @@ class TinyRouter extends Router
         $app::$container->set('router', $this);
 
         // request uri
-        $this->request = $app::$container->get('request');
+        $this->request = request();
         $this->requestUri = $this->request->server('REQUEST_URI');
 
         // App
         $this->app = $app;
-
-        // get config
-        $this->config = $app::$container->getSingle('config');
         // 设置默认模块 set default module
-        $this->moduleName = $this->config->config['route']['default_module'];
+        $this->moduleName = config('route.default_module');
         // 设置默认控制器 set default controller
-        $this->controllerName = $this->config->config['route']['default_controller'];
+        $this->controllerName = config('route.default_controller');
         // 设置默认操作 set default action
-        $this->actionName = $this->config->config['route']['default_action'];
+        $this->actionName = config('route.default_action');
 
         // 路由决策 judge the router strategy
         $this->strategyJudge();
 
         // 路由策略 the current router strategy
         (new $this->routeStrategyMap[$this->routeStrategy])->route($this);
+        config('route.route_strategy',$this->routeStrategy);
+
 
         // 获取控制器类
-        $this->classPath = ucfirst($this->config->config['application_folder_name']) .
+        $this->classPath = ucfirst(config('application_folder_name')) .
             "\\{$this->moduleName}\\Controllers\\" .
             ucfirst($this->controllerName);
 
@@ -143,11 +113,12 @@ class TinyRouter extends Router
         // TODO: 任务模块
 
         // 普通路由
-        if (strpos($this->requestUri, 'index.php') or $this->app->runningMode === 'cli') {
-            $this->routeStrategy = 'general';
+        if (!empty($this->request->server('PATH_INFO')) and $this->app->runningMode != 'cli'){
+            $this->requestUri = $this->request->server('PATH_INFO');
+            $this->routeStrategy = 'pathinfo';
             return;
         }
-        $this->routeStrategy = 'pathinfo';
+        $this->routeStrategy = 'general';
     }
 
     /**
@@ -157,7 +128,7 @@ class TinyRouter extends Router
     private function start()
     {
         // 判断模块存在不?
-        if (!in_array(strtolower($this->moduleName), $this->config->config['module'])) {
+        if (!in_array(strtolower($this->moduleName),config('module'))) {
             throw new CoreHttpException(404, 'Module:' . $this->moduleName);
         }
 

@@ -48,7 +48,7 @@ class Container
      * @return mixed
      * @throws CoreHttpException
      */
-    public function get($alias = ''): object
+    public function get($alias = '')
     {
         if (array_key_exists($alias, $this->classMap)) {
             $object = $this->classMap[$alias];

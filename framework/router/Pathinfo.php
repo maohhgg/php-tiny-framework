@@ -9,7 +9,7 @@
 namespace Framework\Router;
 
 
-class Pathinfo implements RouterInterface
+class Pathinfo implements routeStrategyInterface
 {
 
     /**
