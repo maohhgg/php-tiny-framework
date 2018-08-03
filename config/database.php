@@ -9,10 +9,10 @@
 return [
     /* 主库配置 */
     'database' => [
-        'dbtype'   => env('database.dbtype'),
-        'dbprefix' => env('database.dbprefix'),
-        'dbname'   => env('database.dbname'),
-        'dbhost'   => env('database.dbhost'),
+        'type'   => env('database.type','mysql'),
+        'prefix' => env('database.prefix'),
+        'name'   => env('database.name'),
+        'host'   => env('database.host'),
         'username' => env('database.username'),
         'password' => env('database.password'),
     ]

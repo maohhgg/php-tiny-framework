@@ -6,15 +6,15 @@
  * Time: 下午1:37
  */
 
-namespace Framework\Db\Builder;
+namespace Framework\Orm\Builder;
 
-use Framework\Db\DB;
+use Framework\Orm\DB;
 use PDO;
 use PDOStatement;
 
 /**
  * Class Mysql
- * @package Framework\Db\Builder
+ * @package Framework\Orm\Builder
  */
 class Mysql
 {

@@ -6,12 +6,12 @@
  * Time: 下午1:48
  */
 
-namespace Framework\Db;
+namespace Framework\Orm;
 
 
 use Framework\App;
-use Framework\Db\Builder\Builder;
-use Framework\Db\Builder\Mysql;
+use Framework\Orm\Builder\Builder;
+use Framework\Exceptions\CoreHttpException;
 
 class DB
 {
@@ -22,7 +22,7 @@ class DB
      * @var array
      */
     protected $dbStrategyMap = [
-        'mysql' => 'Framework\Db\Builder\Mysql'
+        'mysql' => 'Framework\Orm\Builder\Mysql'
     ];
 
     /**
@@ -43,9 +43,9 @@ class DB
      * @var array
      */
     private $dbConfig = [
-        'dbtype' => '',
-        'dbhost' => '',
-        'dbname' => '',
+        'type' => '',
+        'host' => '',
+        'name' => '',
         'username' => '',
         'password' => ''
     ];
@@ -53,13 +53,13 @@ class DB
     /**
      * @param string $tableName
      * @return DB
-     * @throws \Framework\Exceptions\CoreHttpException
+     * @throws CoreHttpException
      */
     static public function table(string $tableName)
     {
         $db = new self;
         $db->tableName = $tableName;
-        $prefix = config('database.dbprefix');
+        $prefix = config('database.prefix');
         if (!empty($prefix)) {
             $db->tableName = $prefix . '_' . $db->tableName;
         }
@@ -68,7 +68,7 @@ class DB
 
     /**
      * DB constructor.
-     * @throws \Framework\Exceptions\CoreHttpException
+     * @throws CoreHttpException
      */
     public function __construct()
     {
@@ -76,7 +76,7 @@ class DB
     }
 
     /**
-     * @throws \Framework\Exceptions\CoreHttpException
+     * @throws CoreHttpException
      */
     public function init()
     {
@@ -89,18 +89,18 @@ class DB
     }
 
     /**
-     * @throws \Framework\Exceptions\CoreHttpException
+     * @throws CoreHttpException
      */
     public function decide()
     {
         $dbConfig = $this->dbConfig;
-        $dbStrategyName = $this->dbStrategyMap[$dbConfig['dbtype']];
+        $dbStrategyName = $this->dbStrategyMap[$dbConfig['type']];
         $this->dbInstance = APP::$container->getSingle(
-            "{$dbConfig['dbtype']}",
+            "{$dbConfig['type']}",
             function () use ($dbStrategyName, $dbConfig) {
                 return new $dbStrategyName(
-                    $dbConfig['dbhost'],
-                    $dbConfig['dbname'],
+                    $dbConfig['host'],
+                    $dbConfig['name'],
                     $dbConfig['username'],
                     $dbConfig['password']
                 );
@@ -112,7 +112,7 @@ class DB
      * 查找单条数据
      * @param array $data
      * @return mixed
-     * @throws \Framework\Exceptions\CoreHttpException
+     * @throws CoreHttpException
      */
     public function first(array $data = [])
     {
@@ -126,7 +126,7 @@ class DB
      * 查找所有数据
      * @param array $data
      * @return mixed
-     * @throws \Framework\Exceptions\CoreHttpException
+     * @throws CoreHttpException
      */
     public function get(array $data = [])
     {
@@ -140,7 +140,7 @@ class DB
      * 插入数据
      * @param array $data
      * @return mixed
-     * @throws \Framework\Exceptions\CoreHttpException
+     * @throws CoreHttpException
      */
     public function save($data = [])
     {
@@ -153,7 +153,7 @@ class DB
      * 更新数据
      * @param array $data
      * @return mixed
-     * @throws \Framework\Exceptions\CoreHttpException
+     * @throws CoreHttpException
      */
     public function update($data = [])
     {
@@ -179,7 +179,7 @@ class DB
      * 使用Sql语句查询
      * @param string $sql
      * @return mixed
-     * @throws \Framework\Exceptions\CoreHttpException
+     * @throws CoreHttpException
      */
     public function query($sql = '')
     {
@@ -204,7 +204,7 @@ class DB
     }
 
     /**
-     * @throws \Framework\Exceptions\CoreHttpException
+     * @throws CoreHttpException
      */
     public static function beginTransaction()
     {
@@ -216,7 +216,7 @@ class DB
     }
 
     /**
-     * @throws \Framework\Exceptions\CoreHttpException
+     * @throws CoreHttpException
      */
     public static function commit()
     {
@@ -229,7 +229,7 @@ class DB
 
 
     /**
-     * @throws \Framework\Exceptions\CoreHttpException
+     * @throws CoreHttpException
      */
     public static function rollBack()
     {

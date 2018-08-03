@@ -6,7 +6,7 @@
  * Time: 下午2:03
  */
 
-namespace Framework\Db;
+namespace Framework\Orm;
 
 
 use Framework\Exceptions\CoreHttpException;
@@ -47,7 +47,7 @@ trait SQLInterpreter
      * 表名称
      * @var string
      */
-    protected $tableName = '';
+    public $tableName = '';
 
     /**
      * 拼接的SQL语句

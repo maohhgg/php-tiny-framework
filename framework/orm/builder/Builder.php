@@ -6,10 +6,10 @@
  * Time: 下午2:51
  */
 
-namespace Framework\Db\Builder;
+namespace Framework\Orm\Builder;
 
 
-use Framework\Db\DB;
+use Framework\Orm\DB;
 
 interface Builder
 {

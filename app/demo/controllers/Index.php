@@ -8,26 +8,27 @@
 
 namespace App\Demo\Controllers;
 
+use App\Demo\Model\Employees;
 use Framework\Controller;
-use Framework\DB\DB;
+use Framework\Exceptions\CoreHttpException;
 
 class Index extends Controller
 {
 
     /**
      * @return string
-     * @throws \Framework\Exceptions\CoreHttpException
+     * @throws CoreHttpException
      */
     public function hello()
     {
-        return sprintf('Action is "%s",  Route Strategy is "%s"',get_class(),config('route.route_strategy'));
+        return sprintf('Action is "%s",  Route Strategy is "%s"', get_class(), config('route.strategy'));
     }
 
     /**
      * @return string
-     * @throws \Framework\Exceptions\CoreHttpException
      */
-    public function add(){
+    public function add()
+    {
         $data = [
             'birth_date' => date('Y-m-d', time()),
             'first_name' => 'Yi',
@@ -35,22 +36,20 @@ class Index extends Controller
             'gender' => 'M',
             'hire_date' => date('Y-m-d', time())
         ];
-        return json_encode(DB::table('employees')->save($data));
+        return json_encode(Employees::save($data));
     }
 
     /**
      * @return string
-     * @throws \Framework\Exceptions\CoreHttpException
      */
     public function show()
     {
-        $data = DB::table('employees')->where([])->get();
-        return json_encode($data);
+        return $this->fetch('index/show', ['users' => Employees::where([])->get()]);
     }
 
     /**
      * @return string
-     * @throws \Framework\Exceptions\CoreHttpException
+     * @throws CoreHttpException
      */
     public function test()
     {
@@ -58,11 +57,12 @@ class Index extends Controller
         request()->check('password', 'length', 12);
         request()->check('code', 'number');
         return json_encode([
-            'username' =>  request()->get('username', 'default value')
+            'username' => request()->get('username', 'default value')
         ]);
     }
 
-    public function view(){
-        return $this->fetch('index/view',['body' => 'Test body information', 'users' => [1, 2]]);
+    public function view()
+    {
+        return $this->fetch('index/view', ['body' => 'Test body information', 'users' => [1, 2]]);
     }
 }
