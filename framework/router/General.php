@@ -19,7 +19,6 @@ class General implements routeStrategyInterface
      */
     public function route(Router $entrance)
     {
-        $app = $entrance->app;
         $request = request();
 
         $moduleName = $request->check('m') ?

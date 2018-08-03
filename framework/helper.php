@@ -67,7 +67,7 @@ if (!function_exists('config')) {
     /**
      * @param $paramName
      * @param null $paramValue
-     * @return null
+     * @return array|string
      * @throws \Framework\Exceptions\CoreHttpException
      */
     function config($paramName = null, $paramValue = null)
@@ -78,8 +78,8 @@ if (!function_exists('config')) {
         }
 
         if ($paramValue) {
-            $config = array_merge_recursive($config, array_cursive(explode('.', $paramName), $paramValue));
-            return true;
+            $config = array_replace_recursive($config, array_cursive(explode('.', $paramName), $paramValue));
+            return $paramValue;
         }
 
         $spec = $config;

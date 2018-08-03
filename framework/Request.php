@@ -58,6 +58,13 @@ class Request
      */
     private $requestParams = [];
 
+
+    /**
+     * 请求的PATH_INFO
+     * @var string
+     */
+    private $pathInfo = '';
+
     /**
      * cookie
      * @var array
@@ -95,10 +102,11 @@ class Request
     public function __construct(App $app)
     {
         $this->serverParams = $_SERVER;
-        $this->mothod = isset($_SERVER['REQUEST_METHOD']) ? strtolower($_REQUEST['REQUEST_METHOD']) : 'get';
+        $this->method = isset($_SERVER['REQUEST_METHOD']) ? strtolower($_REQUEST['REQUEST_METHOD']) : 'get';
         $this->serverIP = isset($_SERVER['REMOTE_ADDR']) ? strtolower($_SERVER['REMOTE_ADDR']) : '';
         $this->clientIP = isset($_SERVER['SERVER_ADDR']) ? strtolower($_SERVER['SERVER_ADDR']) : '';
         $this->beginTime = isset($_SERVER['REQUEST_TIME']) ? isset($_SERVER['REQUEST_TIME']) : microtime(true);
+        $this->pathInfo = isset($_SERVER['PATH_INFO']) ? strtolower($_SERVER['PATH_INFO']) : '';
 
         if ($app->runningMode === 'cli') {
             // cli 模式
@@ -108,9 +116,21 @@ class Request
             return;
         }
 
+        $this->postParams = $_POST;
         $this->requestParams = $_REQUEST;
         $this->getParams = $_GET;
-        $this->postParams = $_POST;
+
+        $uri = explode('/', trim($this->pathInfo, '/'));
+        if (!empty($this->pathInfo) and count($uri) > 3) {
+            $i = 3;
+            while ($i < count($uri)) {
+                $temp = isset($uri[$i+1]) ? $uri[$i+1] : null;
+                $this->getParams[$uri[$i]] = $temp;
+                $this->requestParams[$uri[$i]] = $temp;
+                $i += 2;
+            }
+        }
+
 
     }
 
@@ -133,6 +153,7 @@ class Request
     {
         $this->$name = $value;
     }
+
 
     /**
      * 获取GET参数
@@ -221,12 +242,13 @@ class Request
      * @param string $paramName 参数名
      * @param string $rule 规则
      * @param int $length 长度
+     * @return bool|void
      * @throws CoreHttpException
      */
     public function check(string $paramName = '', string $rule = '', int $length = 0)
     {
         if ($rule === 'require') {
-            if (! empty($this->request($paramName))) return;
+            if (!empty($this->request($paramName))) return;
             throw new CoreHttpException(404, "param {$paramName}");
         }
         if ($rule === 'length') {
@@ -236,9 +258,10 @@ class Request
         if ($rule === 'number') {
             if (is_numeric($this->request($paramName))) return;
             throw new CoreHttpException(404, "{$paramName} type is not number");
-        } else {
-            return empty($this->request($paramName));
         }
+
+        return !empty($this->request($paramName));
     }
+
 
 }

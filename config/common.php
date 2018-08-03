@@ -23,6 +23,8 @@ return [
         'default_controller' => 'index',
         // 默认操作
         'default_action' => 'hello',
+        // 路由策略  PathInfo General
+        'strategy' => '',
     ],
 
     /* 默认时区 */

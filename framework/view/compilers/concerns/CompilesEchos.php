@@ -28,4 +28,9 @@ trait CompilesEchos
     {
         return preg_replace('/{!!(.*)!!}/', '<?php echo isset($1) ? $1 : null ?>', $content);
     }
+
+    protected function compileSampleEchos($content)
+    {
+        return preg_replace('/{!(.*)!}/', '<?php echo $1 ?>', $content);
+    }
 }

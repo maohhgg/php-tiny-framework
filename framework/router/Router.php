@@ -14,6 +14,8 @@ use Framework\handles\ConfigHandle;
 
 abstract class Router
 {
+    const PATH_INFO = 'PathInfo';
+    const GENERAL = 'General';
     /**
      * 框架实例
      * @var App
@@ -41,5 +43,5 @@ abstract class Router
     /**
      * @var string
      */
-    public $requestUri;
+    public $pathInfo;
 }

@@ -28,7 +28,8 @@ class TinyCompiler extends Compiler implements CompilerInterface
 
     protected $echoCompilers = [
         'RawEchos',
-        'EscapedEchos'
+        'EscapedEchos',
+        'SampleEchos'
     ];
 
     public function isExpired($path)

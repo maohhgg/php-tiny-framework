@@ -55,8 +55,8 @@ class TinyRouter extends Router
      * @var array
      */
     private $routeStrategyMap = [
-        'general' => 'Framework\Router\General',
-        'pathinfo' => 'Framework\Router\Pathinfo',
+        self::GENERAL => 'Framework\Router\General',
+        self::PATH_INFO => 'Framework\Router\PathInfo',
     ];
 
 
@@ -75,6 +75,7 @@ class TinyRouter extends Router
 
         // App
         $this->app = $app;
+
         // 设置默认模块 set default module
         $this->moduleName = config('route.default_module');
         // 设置默认控制器 set default controller
@@ -84,11 +85,10 @@ class TinyRouter extends Router
 
         // 路由决策 judge the router strategy
         $this->strategyJudge();
+        config('route.strategy', $this->routeStrategy);
 
         // 路由策略 the current router strategy
         (new $this->routeStrategyMap[$this->routeStrategy])->route($this);
-        config('route.route_strategy',$this->routeStrategy);
-
 
         // 获取控制器类
         $this->classPath = ucfirst(config('application_folder_name')) .
@@ -103,6 +103,7 @@ class TinyRouter extends Router
      * 路由策略决策
      *
      * @param void
+     * @throws CoreHttpException
      */
     private function strategyJudge()
     {
@@ -112,13 +113,19 @@ class TinyRouter extends Router
         // 任务路由
         // TODO: 任务模块
 
+
         // 普通路由
-        if (!empty($this->request->server('PATH_INFO')) and $this->app->runningMode != 'cli'){
-            $this->requestUri = $this->request->server('PATH_INFO');
-            $this->routeStrategy = 'pathinfo';
+        if (!empty(config('route.strategy'))) {
+            $this->routeStrategy = config('route.strategy');
+            return ;
+        }
+
+        if (!empty($this->request->server('PATH_INFO')) and $this->app->runningMode != 'cli') {
+            $this->pathInfo = $this->request->server('PATH_INFO');
+            $this->routeStrategy = self::PATH_INFO;
             return;
         }
-        $this->routeStrategy = 'general';
+        $this->routeStrategy = self::GENERAL;
     }
 
     /**
@@ -128,7 +135,7 @@ class TinyRouter extends Router
     private function start()
     {
         // 判断模块存在不?
-        if (!in_array(strtolower($this->moduleName),config('module'))) {
+        if (!in_array(strtolower($this->moduleName), config('module'))) {
             throw new CoreHttpException(404, 'Module:' . $this->moduleName);
         }
 
