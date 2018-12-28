@@ -5,21 +5,22 @@
  * Date: 18-6-26
  * Time: 上午7:30
  */
+
 use Framework\Exceptions\CoreHttpException;
 use Framework\handles\ConfigHandle;
 use framework\handles\EnvHandle;
 use Framework\Handles\RouterHandle;
 use framework\Request;
 use Framework\Response;
+use Framework\App;
 
 
 require(__DIR__ . '/App.php');
 
-
 try {
 
-    $app = new Framework\App(realpath(__DIR__ . '/..'), function (){
-        return require(__DIR__.'/Load.php');
+    $app = new App(realpath(__DIR__ . '/..'), function () {
+        return require(__DIR__ . '/Load.php');
     });
 
     /**
@@ -35,7 +36,7 @@ try {
         return new ConfigHandle();
     });
 
-    $app->load(function (){
+    $app->load(function () {
         // 加载路由机制
         return new RouterHandle();
     });
@@ -58,10 +59,12 @@ try {
 
 
 } catch (CoreHttpException $e) {
-
     /**
      * 捕获异常
      * Catch exception
      */
-    $e->reponse();
+    if (env('env.env') == App::DEVELOP) {
+        $e->reponse();
+    }
+    die("发生错误了，请联系管理员。");
 }

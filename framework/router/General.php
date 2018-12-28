@@ -8,8 +8,7 @@
 
 namespace Framework\Router;
 
-
-class General implements routeStrategyInterface
+class General implements RouteStrategyInterface
 {
 
     /**

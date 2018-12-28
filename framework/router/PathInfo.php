@@ -8,11 +8,10 @@
 
 namespace Framework\Router;
 
-
-class PathInfo implements routeStrategyInterface
+class PathInfo implements outeStrategyInterface
 {
 
-    /**
+    /**R
      * 路由方法
      * @param Router $entrance
      */

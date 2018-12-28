@@ -8,7 +8,6 @@
 
 namespace Framework\Orm;
 
-
 use Framework\App;
 use Framework\Orm\Builder\Builder;
 use Framework\Exceptions\CoreHttpException;
@@ -55,7 +54,7 @@ class DB
      * @return DB
      * @throws CoreHttpException
      */
-    static public function table(string $tableName)
+    public static function table(string $tableName)
     {
         $db = new self;
         $db->tableName = $tableName;
@@ -80,7 +79,7 @@ class DB
      */
     public function init()
     {
-        foreach ($this->dbConfig as $k => $v){
+        foreach ($this->dbConfig as $k => $v) {
             $this->dbConfig[$k] = config('database')[$k];
         }
         unset($k);

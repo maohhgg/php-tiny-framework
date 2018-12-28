@@ -8,7 +8,6 @@
 
 namespace Framework;
 
-
 class Response
 {
     /**
@@ -28,7 +27,7 @@ class Response
     public function responseJson($response)
     {
         header('Content-Type:Application/json; Charset=utf-8');
-        die(json_encode($response,JSON_UNESCAPED_UNICODE));
+        die(json_encode($response, JSON_UNESCAPED_UNICODE));
     }
 
 
@@ -41,10 +40,10 @@ class Response
     {
         header('Content-Type:Application/json; Charset=utf-8');
         die(json_encode([
-            'code'    => 200,
+            'code' => 200,
             'message' => 'OK',
-            'result'  => $response
-        ],JSON_UNESCAPED_UNICODE));
+            'result' => $response
+        ], JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -54,9 +53,9 @@ class Response
     public function cliModeSuccess($response)
     {
         var_dump([
-            'code'    => 200,
+            'code' => 200,
             'message' => 'OK',
-            'result'  => $response
+            'result' => $response
         ]);
     }
 
@@ -72,9 +71,9 @@ class Response
     {
         header('Content-Type:Application/json; Charset=utf-8');
         die(json_encode([
-            'code'    => $code,
+            'code' => $code,
             'message' => $message,
-            'result'  => $response
-        ],JSON_UNESCAPED_UNICODE));
+            'result' => $response
+        ], JSON_UNESCAPED_UNICODE));
     }
 }

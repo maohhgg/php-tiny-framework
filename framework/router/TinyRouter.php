@@ -8,7 +8,6 @@
 
 namespace Framework\Router;
 
-
 use Framework\App;
 use Framework\Exceptions\CoreHttpException;
 use framework\Request;
@@ -108,7 +107,9 @@ class TinyRouter extends Router
     private function strategyJudge()
     {
         // 路由策略
-        if (!empty($this->routeStrategy)) return;
+        if (!empty($this->routeStrategy)) {
+            return;
+        }
 
         // 任务路由
         // TODO: 任务模块
@@ -117,7 +118,7 @@ class TinyRouter extends Router
         // 普通路由
         if (!empty(config('route.strategy'))) {
             $this->routeStrategy = config('route.strategy');
-            return ;
+            return;
         }
 
         if (!empty($this->request->server('PATH_INFO')) and $this->app->runningMode != 'cli') {

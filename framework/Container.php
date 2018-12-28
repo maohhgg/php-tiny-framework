@@ -8,9 +8,7 @@
 
 namespace Framework;
 
-
 use Framework\Exceptions\CoreHttpException;
-
 
 class Container
 {
@@ -78,7 +76,7 @@ class Container
             throw new CoreHttpException(400, "{$alias} and {$object} is empty");
         }
         if (empty($alias) && !empty($object)) {
-            throw new CoreHttpException(400,"{$alias} is empty");
+            throw new CoreHttpException(400, "{$alias} is empty");
         }
 
         if (is_callable($alias)) {
@@ -89,7 +87,7 @@ class Container
         }
 
         if (is_callable($object)) {
-            if(array_key_exists($alias,$this->instanceMap)){
+            if (array_key_exists($alias, $this->instanceMap)) {
                 return $this->instanceMap[$alias];
             }
             $this->instanceMap[$alias] = $object;
@@ -135,6 +133,6 @@ class Container
             return $this->instanceMap[$alias] = $closure();
         }
 
-        throw new CoreHttpException(404,'Class:' . $alias);
+        throw new CoreHttpException(404, 'Class:' . $alias);
     }
 }

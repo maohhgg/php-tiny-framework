@@ -39,24 +39,25 @@ class CoreHttpException extends Exception
     public function __construct($code = 200, $extra = '')
     {
         $this->code = $code;
-        if(!$extra) {
+        if (!$extra) {
             $this->message = $this->httpCode[$code];
             return;
         }
-        $this->message = $extra. ' ' . $this->httpCode[$code];
+        $this->message = $extra . ' ' . $this->httpCode[$code];
     }
 
     /**
      * rest 风格http响应
      */
-    public function reponse(){
+    public function reponse()
+    {
         $data = [
             '__coreError' => [
-                'code'    => $this->getCode(),
+                'code' => $this->getCode(),
                 'message' => $this->getMessage(),
-                'infomations'  => [
-                    'file'  => $this->getFile(),
-                    'line'  => $this->getLine(),
+                'infomations' => [
+                    'file' => $this->getFile(),
+                    'line' => $this->getLine(),
                     'trace' => $this->getTrace(),
                 ]
             ]

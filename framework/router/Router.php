@@ -11,7 +11,6 @@ namespace Framework\Router;
 use Framework\App;
 use Framework\handles\ConfigHandle;
 
-
 abstract class Router
 {
     const PATH_INFO = 'PathInfo';

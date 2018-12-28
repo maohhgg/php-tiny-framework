@@ -102,11 +102,17 @@ class Request
     public function __construct(App $app)
     {
         $this->serverParams = $_SERVER;
-        $this->method = isset($_SERVER['REQUEST_METHOD']) ? strtolower($_REQUEST['REQUEST_METHOD']) : 'get';
-        $this->serverIP = isset($_SERVER['REMOTE_ADDR']) ? strtolower($_SERVER['REMOTE_ADDR']) : '';
-        $this->clientIP = isset($_SERVER['SERVER_ADDR']) ? strtolower($_SERVER['SERVER_ADDR']) : '';
-        $this->beginTime = isset($_SERVER['REQUEST_TIME']) ? isset($_SERVER['REQUEST_TIME']) : microtime(true);
-        $this->pathInfo = isset($_SERVER['PATH_INFO']) ? strtolower($_SERVER['PATH_INFO']) : '';
+
+        $this->method =
+            isset($this->serverParams['REQUEST_METHOD']) ? strtolower($this->serverParams['REQUEST_METHOD']) : 'get';
+        $this->serverIP =
+            isset($this->serverParams['REMOTE_ADDR']) ? strtolower($this->serverParams['REMOTE_ADDR']) : '';
+        $this->clientIP =
+            isset($this->serverParams['SERVER_ADDR']) ? strtolower($this->serverParams['SERVER_ADDR']) : '';
+        $this->beginTime =
+            isset($this->serverParams['REQUEST_TIME']) ? isset($this->serverParams['REQUEST_TIME']) : microtime(true);
+        $this->pathInfo =
+            isset($this->serverParams['PATH_INFO']) ? strtolower($this->serverParams['PATH_INFO']) : '';
 
         if ($app->runningMode === 'cli') {
             // cli 模式
@@ -124,14 +130,12 @@ class Request
         if (!empty($this->pathInfo) and count($uri) > 3) {
             $i = 3;
             while ($i < count($uri)) {
-                $temp = isset($uri[$i+1]) ? $uri[$i+1] : null;
+                $temp = isset($uri[$i + 1]) ? $uri[$i + 1] : null;
                 $this->getParams[$uri[$i]] = $temp;
                 $this->requestParams[$uri[$i]] = $temp;
                 $i += 2;
             }
         }
-
-
     }
 
     /**
@@ -242,21 +246,27 @@ class Request
      * @param string $paramName 参数名
      * @param string $rule 规则
      * @param int $length 长度
-     * @return bool|void
+     * @return bool
      * @throws CoreHttpException
      */
     public function check(string $paramName = '', string $rule = '', int $length = 0)
     {
         if ($rule === 'require') {
-            if (!empty($this->request($paramName))) return;
+            if (!empty($this->request($paramName))) {
+                return false;
+            }
             throw new CoreHttpException(404, "param {$paramName}");
         }
         if ($rule === 'length') {
-            if (strlen($this->request($paramName)) === $length) return;
+            if (strlen($this->request($paramName)) === $length) {
+                return false;
+            }
             throw new CoreHttpException(404, "param {$paramName} length is not {$length}");
         }
         if ($rule === 'number') {
-            if (is_numeric($this->request($paramName))) return;
+            if (is_numeric($this->request($paramName))) {
+                return false;
+            }
             throw new CoreHttpException(404, "{$paramName} type is not number");
         }
 

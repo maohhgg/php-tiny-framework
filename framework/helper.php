@@ -73,7 +73,7 @@ if (!function_exists('config')) {
     function config($paramName = null, $paramValue = null)
     {
         $config = &App::$container->getSingle('config')->config;
-        if(!$paramName) {
+        if (!$paramName) {
             return $config;
         }
 
@@ -84,7 +84,7 @@ if (!function_exists('config')) {
 
         $spec = $config;
         foreach (explode('.', $paramName) as $item) {
-            $spec =  $spec[$item];
+            $spec = $spec[$item];
         }
         return $spec;
     }

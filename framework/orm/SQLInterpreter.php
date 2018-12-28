@@ -8,7 +8,6 @@
 
 namespace Framework\Orm;
 
-
 use Framework\Exceptions\CoreHttpException;
 
 trait SQLInterpreter
@@ -160,7 +159,8 @@ trait SQLInterpreter
      * @param array $data
      * @return $this
      */
-    public function where(array $data){
+    public function where(array $data)
+    {
         if (empty($data)) {
             return $this;
         }
@@ -168,11 +168,11 @@ trait SQLInterpreter
         $count = count($data);
 
         /* 单条件 */
-        if ($count === 1){
+        if ($count === 1) {
             $field = array_keys($data)[0];
             $value = array_values($data)[0];
-            if (! is_array($value)){
-                $this->where  = " WHERE `{$field}` = :{$field}";
+            if (!is_array($value)) {
+                $this->where = " WHERE `{$field}` = :{$field}";
                 $this->params = $data;
                 return $this;
             }
@@ -182,11 +182,11 @@ trait SQLInterpreter
         }
 
         /* 多条件 */
-        $tmp  = $data;
+        $tmp = $data;
         $last = array_pop($tmp);
         foreach ($data as $k => $v) {
             if ($v === $last) {
-                if (! is_array($v)){
+                if (!is_array($v)) {
                     $this->where .= "`{$k}` = :{$k}";
                     $this->params[$k] = $v;
                     continue;
@@ -195,8 +195,8 @@ trait SQLInterpreter
                 $this->params[$k] = $v[1];
                 continue;
             }
-            if (! is_array($v)){
-                $this->where  .= " WHERE `{$k}` = :{$k} AND ";
+            if (!is_array($v)) {
+                $this->where .= " WHERE `{$k}` = :{$k} AND ";
                 $this->params[$k] = $v;
                 continue;
             }
@@ -215,7 +215,7 @@ trait SQLInterpreter
      */
     public function orderBy(string $sort)
     {
-        if (! is_string($sort)) {
+        if (!is_string($sort)) {
             throw new CoreHttpException(400, 'argu is not string');
         }
         $this->orderBy = " order by {$sort}";

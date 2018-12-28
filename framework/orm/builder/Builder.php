@@ -8,7 +8,6 @@
 
 namespace Framework\Orm\Builder;
 
-
 use Framework\Orm\DB;
 
 interface Builder

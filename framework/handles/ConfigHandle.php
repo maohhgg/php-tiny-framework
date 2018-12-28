@@ -8,7 +8,6 @@
 
 namespace Framework\handles;
 
-
 use Framework\App;
 
 class ConfigHandle implements Handle
@@ -59,7 +58,7 @@ class ConfigHandle implements Handle
 
 
         // load helper
-        require($app->rootPath.'/framework/helper.php');
+        require($app->rootPath . '/framework/helper.php');
 
         // load config file
         $this->loadConfig($app);

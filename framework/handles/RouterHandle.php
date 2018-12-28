@@ -7,6 +7,7 @@
  */
 
 namespace Framework\Handles;
+
 use Framework\App;
 use Framework\Router\TinyRouter;
 

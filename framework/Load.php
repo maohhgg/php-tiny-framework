@@ -5,6 +5,7 @@
  * Date: 18-6-26
  * Time: 上午7:54
  */
+
 namespace Framework;
 
 use Framework\Exceptions\CoreHttpException;
@@ -61,7 +62,7 @@ class Load
         array_push($classInfo, $className);
         $class = implode('\\', $classInfo);
         $path = self::$namespaceMap['Framework'];
-        $classPath = $path .'/'. str_replace('\\', '/', $class) . '.php';
+        $classPath = $path . '/' . str_replace('\\', '/', $class) . '.php';
 
         if (!file_exists($classPath)) {
             return;

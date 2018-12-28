@@ -8,7 +8,6 @@
 
 namespace Framework\Orm;
 
-
 use Framework\App;
 use Framework\Exceptions\CoreHttpException;
 
@@ -21,7 +20,7 @@ class Model
     /**
      * @var DB
      */
-    static private $instance;
+    private static $instance;
 
     public $tableName = '';
 

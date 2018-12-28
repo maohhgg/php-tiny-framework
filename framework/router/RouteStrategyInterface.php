@@ -8,8 +8,7 @@
 
 namespace Framework\router;
 
-
-interface routeStrategyInterface
+interface RouteStrategyInterface
 {
 
     /**
